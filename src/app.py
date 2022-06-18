@@ -2,6 +2,9 @@ import os
 import requests
 import tweepy
 import pandas as pd
+import re
+import matplotlib.pyplot as plt
+import seabron as sns
 from dotenv import load_dotenv
 
 # load the .env file variables
@@ -34,3 +37,31 @@ tweets_data = tweets_dict['data']
 df = pd.json_normalize(tweets_data)
 
 list(tweets_data[0])
+
+df
+
+df.to_csv("coding-tweets.csv")
+
+def word_in_text(word, text):
+    word = word.lower()
+    text = text.lower()
+    match = re.search(word, text)
+
+    if match:
+        return True 
+    return False
+
+[pandas, python] = [0, 0]
+
+for index, row in df.iterrows():
+    pandas += word_in_text("pandas", row["text"])
+    python += word_in_text("python", row["text"])
+
+sns.set(color_codes=True)
+
+cd = ["pandas", "python"]
+
+ax = sns.barplot(cd, [pandas, python])
+ax.set(ylabel="count")
+plt.show()
+
